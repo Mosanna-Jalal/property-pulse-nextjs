@@ -10,7 +10,7 @@ module.exports = {
       fontFamily: {
         sans: ["poppins", "sans-serif"],
     },
-    gridTemplateColumns: {"70-30": "70% 28 %"},
+    gridTemplateColumns: {"70-30": "70% 30%"},
   },},
   plugins: [],
 };
