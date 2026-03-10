@@ -267,10 +267,19 @@ const Navbar = () => {
               </Link>
             )}
             {!session && (
-              <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
-                <i className="fa-brands fa-google mr-2"></i>
-                <span>Login or Register</span>
-              </button>
+              <div className="my-5 px-1">
+                {providers &&
+                  Object.values(providers).map((provider, index) => (
+                    <button
+                      key={index}
+                      onClick={() => signIn(provider.id)}
+                      className="w-full flex items-center justify-center gap-2 text-white bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 rounded-lg px-4 py-3 font-medium shadow-sm transition"
+                    >
+                      <FaGoogle className="text-white" />
+                      <span>Login or Register</span>
+                    </button>
+                  ))}
+              </div>
             )}
           </div>
         </div>
