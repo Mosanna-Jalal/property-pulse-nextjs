@@ -44,7 +44,7 @@ const ShareButtons = ({ property }) => {
         <EmailShareButton
           url={shareUrl}
           subject={`Check out this property: ${property.name}`}
-          body={`I found this property on PropertyPulse and thought you might be interested:\n\n${property.name}\n${shareUrl}`}
+          body={`I found this property on Property Market and thought you might be interested:\n\n${property.name}\n${shareUrl}`}
         >
           <EmailIcon size={40} round={true} />
         </EmailShareButton>

@@ -6,6 +6,32 @@ import connectDB from "@/config/database";
 import Property from "@/models/Property";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { getSiteUrl } from "@/utils/seoConfig";
+
+const siteUrl = getSiteUrl();
+
+export const generateMetadata = ({ searchParams }) => {
+  const location = searchParams?.location?.trim();
+  const propertyType = searchParams?.propertyType?.trim();
+
+  const titleLocation = location || "Gaya, Bihar";
+  const titleType =
+    propertyType && propertyType !== "All" ? `${propertyType} ` : "";
+
+  const title = `${titleType}Properties in ${titleLocation}`;
+  const description = `Search ${titleType.toLowerCase()}properties available in ${titleLocation} on Property Market.`;
+  const canonicalPath = `/properties/search-results?location=${encodeURIComponent(
+    location || ""
+  )}&propertyType=${encodeURIComponent(propertyType || "All")}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}${canonicalPath}`,
+    },
+  };
+};
 
 const SearchResultsPage = async ({
   searchParams: { location, propertyType },

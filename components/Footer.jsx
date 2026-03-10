@@ -1,27 +1,82 @@
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@/app/assets/images/logo.png";
+import logoWhite from "@/app/assets/images/logo-white.png";
+import { FaCamera, FaCode, FaGlobe, FaPenNib } from "react-icons/fa";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-gray-200 py-4 mt-24">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-        <div className="mb-4 md:mb-0">
-          <Image src={logo} alt="Logo" className="h-8 w-auto" />
+    <footer className="mt-24 border-t border-slate-700 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-slate-100">
+      <div className="container mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div>
+            <div className="mb-4">
+              <Image
+                src={logoWhite}
+                alt="Property Market"
+                className="h-9 w-auto"
+              />
+            </div>
+            <p className="text-sm text-slate-300 leading-6">
+              Property Market helps people rent, buy, and sell properties across
+              Gaya, Bihar, and India.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-white">MJX Studios</h3>
+            <div className="rounded-xl border border-slate-600 bg-white/5 p-4">
+              <p className="flex items-center gap-2 font-semibold text-cyan-300">
+                <FaCode /> MJX WEB STUDIO
+              </p>
+              <p className="mt-1 text-sm text-slate-300">
+                Website design, development, and SEO services.
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-600 bg-white/5 p-4">
+              <p className="flex items-center gap-2 font-semibold text-amber-300">
+                <FaCamera /> MJX CINEMATIX STUDIO
+              </p>
+              <p className="mt-1 text-sm text-slate-300">
+                Professional photography and cinematic visual work.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Explore</h3>
+            <ul className="space-y-2 text-slate-200">
+              <li>
+                <Link className="hover:text-white" href="/properties">
+                  Properties
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-white" href="/">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://mj.ideas.build"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-cyan-400/60 bg-cyan-500/10 px-3 py-2 font-medium text-cyan-200 transition hover:bg-cyan-500/20"
+                >
+                  <FaGlobe />
+                  Visit mj.ideas.build for your business optimization needs
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0">
-          <ul className="flex space-x-4">
-            <li>
-              <Link href="/properties">Properties</Link>
-            </li>
-            <li>
-              <Link href="/">Terms of Service</Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500 mt-2 md:mt-0">
-            &copy; {currentYear} PropertyPulse. All rights reserved.
+
+        <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-slate-700 pt-6 text-sm text-slate-300 md:flex-row md:items-center">
+          <p>&copy; {currentYear} Property Market. All rights reserved.</p>
+          <p className="inline-flex items-center gap-2 rounded-full border border-slate-600 bg-white/5 px-4 py-2 font-medium text-slate-100">
+            <FaPenNib className="text-cyan-300" />
+            Designed &amp; Developed by Mosanna Jalal
           </p>
         </div>
       </div>

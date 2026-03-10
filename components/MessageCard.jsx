@@ -1,14 +1,46 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import markMessageAsRead from "@/app/actions/markMessageAsRead";
+import deleteMessage from "@/app/actions/deleteMessage";
+import { useGlobalContext } from "@/context/GlobalContext";
+
 const MessageCard = ({ message }) => {
-  const [isRead, setIsRead] = useState(message.Read);
+  const [isRead, setIsRead] = useState(Boolean(message.read));
+  const [isDeleted, setIsDeleted] = useState(false);
+  const { setUnreadCount } = useGlobalContext();
+
+  const formattedReceivedAt = useMemo(() => {
+    const date = new Date(message.createdAt);
+    return new Intl.DateTimeFormat("en-IN", {
+      dateStyle: "medium",
+      timeStyle: "short",
+      timeZone: "Asia/Kolkata",
+    }).format(date);
+  }, [message.createdAt]);
+
   const handleReadClick = async () => {
     const read = await markMessageAsRead(message._id);
     setIsRead(read);
-    toast.success(`Message marked as ${read ? "read" : "new"}`);
+    setUnreadCount((prevCount) => Math.max(0, prevCount + (read ? -1 : 1)));
+    toast.success(`Message marked as ${read ? "Read" : "New"}`);
   };
+
+  const handleDeleteClick = async () => {
+    try {
+      await deleteMessage(message._id);
+      setIsDeleted(true);
+      if (!isRead) {
+        setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
+      }
+      toast.success("Message deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete message");
+    }
+  };
+  if (isDeleted) {
+    return <p>Deleted Message</p>;
+  }
   return (
     <div className="relative bg-white shadow-md border border-gray-200 p-4 rounded-md">
       {!isRead && (
@@ -42,7 +74,7 @@ const MessageCard = ({ message }) => {
         </li>
         <li>
           <strong> Received: </strong>
-          {new Date(message.createdAt).toLocaleString()}
+          {formattedReceivedAt} IST
         </li>
       </ul>
       <button
@@ -51,7 +83,10 @@ const MessageCard = ({ message }) => {
       >
         {isRead ? "Mark as New" : "Mark as Read"}
       </button>
-      <button className="ml-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
+      <button
+        onClick={handleDeleteClick}
+        className="ml-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+      >
         Delete
       </button>
     </div>

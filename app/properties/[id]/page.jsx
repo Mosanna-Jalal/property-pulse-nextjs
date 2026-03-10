@@ -9,11 +9,64 @@ import Property from "@/models/Property";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { cache } from "react";
+import { getSiteUrl } from "@/utils/seoConfig";
+
+const siteUrl = getSiteUrl();
+
+const getPropertyById = cache(async (id) => {
+  await connectDB();
+
+  try {
+    const propertyDoc = await Property.findById(id).lean();
+    if (!propertyDoc) return null;
+    return convertToSerializableObject(propertyDoc);
+  } catch {
+    return null;
+  }
+});
+
+export const generateMetadata = async ({ params }) => {
+  const property = await getPropertyById(params.id);
+
+  if (!property) {
+    return {
+      title: "Property Not Found",
+      description: "The requested property could not be found on Property Market.",
+      robots: {
+        index: false,
+        follow: true,
+      },
+    };
+  }
+
+  const location = [property?.location?.city, property?.location?.state]
+    .filter(Boolean)
+    .join(", ");
+
+  const description = property.description
+    ? `${property.description.slice(0, 140)}${property.description.length > 140 ? "..." : ""}`
+    : `View details for ${property.name}${location ? ` in ${location}` : ""} on Property Market.`;
+
+  return {
+    title: `${property.name}${location ? ` - ${location}` : ""}`,
+    description,
+    alternates: {
+      canonical: `/properties/${params.id}`,
+    },
+    openGraph: {
+      title: property.name,
+      description,
+      url: `${siteUrl}/properties/${params.id}`,
+      images: property.images?.[0] ? [{ url: property.images[0] }] : [],
+      type: "article",
+    },
+  };
+};
 
 const PropertyPage = async ({ params }) => {
-  await connectDB();
-  const propertyDoc = await Property.findById(params.id).lean();
-  const property = convertToSerializableObject(propertyDoc);
+  const property = await getPropertyById(params.id);
+
   if (!property) {
     return (
       <div className="text-center text-2xl font-bold mt-10">
