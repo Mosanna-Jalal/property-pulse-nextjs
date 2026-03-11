@@ -10,15 +10,18 @@ import mongoose from "mongoose";
 async function updateProperty(propertyId, formData) {
   await connectDB();
   const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.userId) {      
-    throw new Error('User Id is required');
-    }
-    const { userId } = sessionUser;
-    const existingProperty = await Property.findById(propertyId);
-    // verify ownership
-    if (existingProperty.owner.toString() !== userId) {
-      throw new Error('Current user does not own this property');
-    }
+  if (!sessionUser || !sessionUser.userId) {
+    redirect(`/api/auth/signin?callbackUrl=/properties/${propertyId}/edit`);
+  }
+  const { userId } = sessionUser;
+  const existingProperty = await Property.findById(propertyId);
+  if (!existingProperty) {
+    throw new Error("Property not found");
+  }
+  // verify ownership
+  if (existingProperty.owner.toString() !== userId) {
+    throw new Error("Current user does not own this property");
+  }
 
      const propertyData = {
         owner: new mongoose.Types.ObjectId(userId),
@@ -50,7 +53,7 @@ async function updateProperty(propertyId, formData) {
       // Handle image uploads if new images provided
       const images = formData
         .getAll('images')
-        .filter((image) => image.name !== '');
+        .filter((image) => image && typeof image === "object" && image.name !== "");
 
       if (images.length > 0) {
         const imageUrls = [];

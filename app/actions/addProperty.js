@@ -11,13 +11,13 @@ async function addProperty(formData) {
   await connectDB();
   const sessionUser = await getSessionUser();
   if (!sessionUser || !sessionUser.userId) {
-    throw new Error('User Id is required');
+    redirect("/api/auth/signin?callbackUrl=/properties/add");
   }
   const { userId } = sessionUser;
   const amenities = formData.getAll('amenities');
   const images = formData
   .getAll('images')
-  .filter((image) => image.name !== '');
+  .filter((image) => image && typeof image === "object" && image.name !== "");
   
   const propertyData = {
     owner: new mongoose.Types.ObjectId(userId),

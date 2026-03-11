@@ -93,14 +93,16 @@ const Navbar = () => {
                 >
                   Properties
                 </Link>
-                <Link
-                  href="/properties/add"
-                  className={`${
-                    pathname === "/properties/add" ? "bg-black" : ""
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
-                >
-                  Add Property
-                </Link>
+                {session && (
+                  <Link
+                    href="/properties/add"
+                    className={`${
+                      pathname === "/properties/add" ? "bg-black" : ""
+                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                  >
+                    Add Property
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -238,12 +240,13 @@ const Navbar = () => {
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       {isMobileMenuOpen && (
         <div id="mobile-menu">
-          <div className="space-y-1 px-2 pb-3 pt-2">
+          <div className="space-y-2 px-2 pb-3 pt-2">
             <Link
               href="/"
               className={`${
                 pathname === "/" ? "bg-black" : ""
-              } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+              } block text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
             </Link>
@@ -252,7 +255,8 @@ const Navbar = () => {
               href="/properties"
               className={`${
                 pathname === "/properties" ? "bg-black" : ""
-              } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+              } block text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Properties
             </Link>
@@ -261,21 +265,80 @@ const Navbar = () => {
                 href="/properties/add"
                 className={`${
                   pathname === "/properties/add" ? "bg-black" : ""
-                } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                } block text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Add Property
               </Link>
             )}
+            {session && (
+              <div className="mt-3 rounded-md border border-blue-400/60 bg-blue-600/30 p-3">
+                <div className="flex items-center gap-3">
+                  <Image
+                    className="h-9 w-9 rounded-full border border-white/40"
+                    src={profileImage || profileDefault}
+                    width={36}
+                    height={36}
+                    alt="User profile"
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-white">
+                      {session.user?.name || "Your Account"}
+                    </p>
+                    <p className="truncate text-xs text-blue-100">
+                      {session.user?.email || ""}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="rounded-md bg-blue-700/60 px-3 py-2 text-center text-sm text-white hover:bg-blue-700"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href="/messages"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="rounded-md bg-blue-700/60 px-3 py-2 text-center text-sm text-white hover:bg-blue-700"
+                  >
+                    Messages
+                  </Link>
+                  <Link
+                    href="/properties/saved"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="rounded-md bg-blue-700/60 px-3 py-2 text-center text-sm text-white hover:bg-blue-700"
+                  >
+                    Saved
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      signOut();
+                    }}
+                    className="rounded-md bg-gray-700 px-3 py-2 text-sm text-white hover:bg-gray-800"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            )}
             {!session && (
-              <div className="my-5 px-1">
+              <div className="mt-3 px-1">
                 {providers &&
                   Object.values(providers).map((provider, index) => (
                     <button
                       key={index}
-                      onClick={() => signIn(provider.id)}
-                      className="w-full flex items-center justify-center gap-2 text-white bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 rounded-lg px-4 py-3 font-medium shadow-sm transition"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        signIn(provider.id);
+                      }}
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 text-white bg-gray-700 hover:bg-gray-800 rounded-md px-3 py-2 text-sm font-medium shadow transition-colors"
                     >
-                      <FaGoogle className="text-white" />
+                      <FaGoogle className="text-white text-sm" />
                       <span>Login or Register</span>
                     </button>
                   ))}

@@ -3,17 +3,16 @@ import connectDB from "@/config/database";
 import User from "@/models/User";
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+    maxAge: 90 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,   
-      authorization: {
-        params:{
-            prompt: "consent",
-            access_type: "offline",
-            response_type: "code"
-        }
-    }
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   callbacks: {
@@ -37,13 +36,23 @@ export const authOptions = {
         // 4. Return true to allow sign in
         return true;
     },
+    async jwt({ token }) {
+      if (!token.userId && token.email) {
+        await connectDB();
+        const user = await User.findOne({ email: token.email }).select("_id");
+        if (user?._id) {
+          token.userId = user._id.toString();
+        }
+      }
+
+      return token;
+    },
     // Session callback function that modifies the session object
-    async session({ session}) {
-        // 1. Get user from DB
-        const user = await User.findOne({ email: session.user.email });
-        // 2. Assign user id from the session
-        session.user.id = user._id.toString();
-        // 3. Return session
+    async session({ session, token }) {
+      if (session.user && token.userId) {
+        session.user.id = token.userId;
+      }
+
         return session;
     },
   },
