@@ -27,6 +27,12 @@ const Navbar = () => {
     };
     setAuthProviders();
   }, []);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setIsProileMenuOpen(false);
+  }, [pathname]);
+
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -137,7 +143,7 @@ const Navbar = () => {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-                <Link href="messages" className="relative group">
+                <Link href="/messages" className="relative group">
                   <button
                     type="button"
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -239,7 +245,7 @@ const Navbar = () => {
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       {isMobileMenuOpen && (
-        <div id="mobile-menu">
+        <div id="mobile-menu" className="border-t border-blue-500/80 bg-blue-700/95 md:hidden">
           <div className="space-y-2 px-2 pb-3 pt-2">
             <Link
               href="/"
