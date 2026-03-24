@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-div {
+@keyframes heroWordZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(12);
+    filter: blur(10px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
 
+.hero-zoom-word {
+  display: inline-block;
+  transform-origin: center center;
+  animation-name: heroWordZoomIn;
+  animation-duration: 2.2s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-fill-mode: both;
+  will-change: transform, opacity, filter;
+}
+
+.hero-zoom-word-rent {
+  animation-delay: 0.1s;
+}
+
+.hero-zoom-word-buy {
+  animation-delay: 2.5s;
+}
+
+.hero-zoom-word-sell {
+  animation-delay: 4.9s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom-word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
