@@ -5,7 +5,7 @@ import PropertySearchForm from "./PropertySearchForm";
 
 const Hero = () => {
   const subtitle =
-    "Discover verified homes, flats, and land in Gaya district, neighboring cities, across Bihar, and India.";
+    "Discover verified homes, flats, and land in Gaya district and neighboring areas.";
   const [typedSubtitle, setTypedSubtitle] = useState("");
 
   useEffect(() => {
@@ -31,17 +31,10 @@ const Hero = () => {
             <span className="hero-zoom-word hero-zoom-word-rent">Rent</span>,{" "}
             <span className="hero-zoom-word hero-zoom-word-buy">Buy</span>, or{" "}
             <span className="hero-zoom-word hero-zoom-word-sell">Sell</span>{" "}
-            Property in Gaya & Bihar
+            Property in Gaya and Beyond.
           </h1>
           <p className="my-4 text-xl text-white">
             {typedSubtitle}
-            <span
-              className={`inline-block ml-0.5 ${
-                typedSubtitle.length < subtitle.length ? "animate-pulse" : ""
-              }`}
-            >
-              |
-            </span>
           </p>
         </div>
       </div>
