@@ -44,6 +44,14 @@ const PropertySearchForm = () => {
           onChange={(e) => setPropertyType(e.target.value)}
         >
           <option value="All">All</option>
+          <option value="1 BHK">1 BHK</option>
+          <option value="2 BHK">2 BHK</option>
+          <option value="3 BHK">3 BHK</option>
+          <option value="1 RK">1 RK</option>
+          <option value="2RK">2RK</option>
+          <option value="STORE ROOM">Store Room</option>
+          <option value="OFFICE">Office</option>
+          <option value="VENDOR ZONE">Vendor Zone</option>
           <option value="Apartment">Apartment</option>
           <option value="Studio">Studio</option>
           <option value="Condo">Condo</option>

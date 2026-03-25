@@ -23,22 +23,22 @@
   display: inline-block;
   transform-origin: center center;
   animation-name: heroWordZoomIn;
-  animation-duration: 2.2s;
+  animation-duration: 0.85s;
   animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   animation-fill-mode: both;
   will-change: transform, opacity, filter;
 }
 
 .hero-zoom-word-rent {
-  animation-delay: 0.1s;
+  animation-delay: 0.05s;
 }
 
 .hero-zoom-word-buy {
-  animation-delay: 2.5s;
+  animation-delay: 0.55s;
 }
 
 .hero-zoom-word-sell {
-  animation-delay: 4.9s;
+  animation-delay: 1.05s;
 }
 
 @media (prefers-reduced-motion: reduce) {
