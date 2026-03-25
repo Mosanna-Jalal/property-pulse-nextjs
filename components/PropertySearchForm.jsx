@@ -49,6 +49,7 @@ const PropertySearchForm = () => {
           <option value="3 BHK">3 BHK</option>
           <option value="1 RK">1 RK</option>
           <option value="2RK">2RK</option>
+          <option value="Land">Land</option>
           <option value="STORE ROOM">Store Room</option>
           <option value="OFFICE">Office</option>
           <option value="VENDOR ZONE">Vendor Zone</option>
